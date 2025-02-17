@@ -1,4 +1,8 @@
-400s: argument isn't recognized
+{
+    "error lists": "a list of errors, sorted by their value rounded down to the nearest 100",
+    "400 errors: argument isn't recognized": {
+        "404": "command isn't found"
+    }
 
-    404: command isn't found
+}
     

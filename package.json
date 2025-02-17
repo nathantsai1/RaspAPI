@@ -1,9 +1,10 @@
 {
   "name": "raspapi",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
   },
   "keywords": [],
   "type": "commonjs",
@@ -11,7 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.0",
+    "body-parser": "^1.20.3",
     "express": "^4.21.2",
+    "nodejs": "^0.0.0",
     "nodemon": "^3.1.9"
   }
 }

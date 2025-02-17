@@ -1,0 +1,19 @@
+TABLE users {
+    id PRIMARY INT
+    user TEXT
+    question TEXT(for resetting pws)
+    password TEXT(scrambled for security purposes)
+}
+
+TABLE goals(daily goals) {
+    id PRIMARY INT
+    user TEXT(id from table: user)
+    goal INTEGER(distance to run daily[mi])
+}
+
+TABLE distances(workouts recorded) {
+    id PRIMARY INT
+    user TEXT(id from table: user)
+    date TEXT(in miliseconds)
+    distance NUMERIC(in miles)
+}
