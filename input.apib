@@ -1,0 +1,285 @@
+FORMAT: 1A
+HOST: https://raspapi-production.up.railway.app/
+
+# fitness_tracker
+
+Fitness tracker is an app that will let you create a user profile and add/track your 
+running goals/workouts, through an easy-to-use API. Try it [here](https://raspapi-production.up.railway.app/)
+
+## Getting a general list [/api/fitness_tracker{request_type}]
+    
+### Get help [GET]
+
+Get a list of all the possible endpoints using this function
++ Parameters
+    + request_type(text) - use the help(/help) function to get a list of all the 
+        possible endpoints.
+        
++ Response 200 (application/json)
+
+        {
+  "note": {
+    "In the event of an error": "try using the backslash\" before every double quote in the json",
+    "To use the GET request, try using the following": "curl https://link.goes/here",
+    "To use the POST request, try using the following, replacing the single quotes with double": "curl -i -X POST -H 'Content-Type:application/json' -d '{json goes here}' https://link.goes/here",
+    "To use the PUT request, try using the following, replacing the single quotes with double": "curl -i -X PUT -H 'Content-Type:application/json' -d '{json goes here}' https://link.goes/here",
+    "To use the DELETE request, try using the following, replacing the single quotes with double": "curl -i -X DELETE -H 'Content-Type:application/json' -d '{json goes here}' https://link.goes/here"
+  },
+  "GET requests": {
+    "/api/fitness_tracker": "a description given of what the fitness tracker is",
+    "/api/fitness_tracker/help": "describing the different cURL commands available",
+    "/api/fitness_tracker/errors": "a description of all the errors in a fitness tracker"
+  },
+  "POST requests": {
+    "/api/fitness_tracker - there are 6 ways to use this": {
+      "1) Add a workout. The following data must be provided, where x is the number of miles ran(a decimal number)": {
+        "username": "user",
+        "password": "password",
+        "function": "add_run",
+        "workout": "run",
+        "distance": "x"
+      },
+      "2) Get the daily amount you have ran. The following data must be provided": {
+        "username": "user",
+        "password": "password",
+        "function": "get_today"
+      },
+      "3) Set/update a daily goal. the following data must be provided, where x is the goal of the number of miles run(a positive integer)": {
+        "username": "user",
+        "password": "password",
+        "function": "set_goal",
+        "daily_goal": "x"
+      },
+      "4) The past workouts of a runner. the following data must be provided": {
+        "username": "user",
+        "password": "password",
+        "function": "get_all"
+      },
+      "5) Add a new user. The following data must be provided, where the value for 'question' is a string which will help you create a new password if you forget it": {
+        "username": "user",
+        "password": "password",
+        "function": "add_user",
+        "question": "answer"
+      },
+      "6) Find your goals. The following data must be provided": {
+        "username": "user",
+        "password": "password",
+        "function": "find_goal"
+      }
+    }
+  },
+  "PUT requests": {
+    "/api/fitness_tracker - there are 2 ways to use this": {
+      "1) Change a username. The following data must be provided, where the value of \"username\" must be your new username": {
+        "username": "old_user",
+        "new_username": "username",
+        "password": "password",
+        "function": "change_username",
+        "question": "answer"
+      },
+      "2) Change a password. The following data must be provided, where the value of 'password' must be the new password": {
+        "username": "user",
+        "password": "old_password",
+        "new_password": "new_password",
+        "function": "change_password",
+        "question": "answer"
+      }
+    }
+  },
+  "DELETE requests": {
+    "/api/fitness_tracker - delete an existing user from the database. The following data must be provided, where 'are_you_sure' must have the alphabet typed up": {
+      "username": "user",
+      "password": "password",
+      "function": "delete_user",
+      "are_you_sure": "abcdefghijklmnopqrstuvwxyz"
+    }
+  }
+}
+
+### Get error list [GET]
+
+Get a list of all the errors here
+
++ Parameters
+    + request_type(text) - use the error(/error) function to get a list of all the 
+        possible errors.
+
++ Response 200 (application/json)
+    + Body
+        {
+            "error lists": "a list of errors, sorted by their value rounded down to the nearest 100",
+            "400 errors: argument isn't recognized": {
+            "404": "basic argument isn't found - username, password, or function",
+            "405": "an argument is of the wrong length - pw must be greater than 8 characters, and username must be greater than 4 characters",
+            "406": "specified argument isn't found: workout&distance/are_you_sure",
+            "407": "arguement: 'function' does not have a valid value",
+            "408": "database already has user 'user'",
+            "409": "database doesn't have user 'user'",
+            "410": "database doesn't have data from today"
+        },
+            "500 errors: server-side error": {
+            "501": "general server-side error",
+            "502": "has not been implemented yet"
+        },
+            "600 errors: arguments do not match": {
+            "601": "passwords do not match",
+            "602": "usernames do not match",
+            "603": "deletion of user is not confirmed correctly",
+            "604": "argument 'distance' is not a number"
+        }
+}
+
+## Getting the POST, PUT, and DELETE requests [/api/fitness_tracker]
+
+### Add a workout[POST]
+
++ Request (application/json)
+
+        {
+            "username": "user",
+            "password": "password",
+            "function": "add_run",
+            "workout": "run",
+            "distance": "x"
+        }
+
++ Response 200 (application/json)
+    + Body
+        {
+            "message":"Success"
+        }
+    
+
+### Today's runs[POST]
+Get the distance of how far you ran
++ Request (application/json)
+        {
+            "username": "user",
+            "password": "password",
+            "function": "get_today"
+        }
+    
++ Response 200 (application/json)
+    + Body
+        {
+        "message":"success",
+        "recorded_workouts_today": [{
+            "id":1,
+            "user":"8",
+            "date":"1739860979513",
+            "distance":"1.1" }, {
+            "id":2,
+            "user":"8",
+            "date":"1739909844608",
+            "distance":"1.1" } ],
+        "total_distance":"02.2 miles"}
+
+
+### Set daily goal[POST]   
+
+Set/update your goal
++ Request (application/json)
+    {
+        "username": "user",
+        "password": "password",
+        "function": "set_goal",
+        "daily_goal": "x"
+    }
+
++ Response 200 (application/json)
+    + Body
+        {
+            "message":"Success"
+        }
+
+### Past workouts[POST]   
+Find all the workouts you have ran in the past
++ Request (application/json)
+    {
+        "username": "user",
+        "password": "password",
+        "function": "get_all"
+     }
+
++ Response 200 (application/json)
+    + Body
+        {"message":"success","all_workouts":[{"id":1,"user":"8","date":"1739860979513","distance":"1.1"},{"id":2,"user":"8","date":"1739909844608","distance":"1.1"}]}
+
+### Add user[POST]
+Adds a user to the DB
++ Request (application/json)
+    {
+        "username": "user",
+        "password": "password",
+        "function": "add_user",
+        "question": "answer"
+    }
+
++ Response 200 (application/json)
+    + Body
+    {
+        "message": "Success! User 'user' added!"
+    }
+
+### Find goals[POST]
+Find the goals of a user
++ Request (application/json)
+    {
+        "username": "user",
+        "password": "password",
+        "function": "find_goal"
+    }
+
++ Response 200 (application/json)
+    + Body
+    {"message":"success","goal":"2 miles/day"}
+
+### Changing a username[PUT]
+
++ Request (application/json)
+    {
+        "username": "old_user",
+        "new_username": "username",
+        "password": "password",
+        "function": "change_username",
+        "question": "answer"
+    }
+
++ Response 200 (application/json)
+    + Body
+        { 
+            "message": "Success: username changed" 
+        }
+
+### Changing a password[PUT]
+
++ Request (application/json)
+    {
+        "username": "user",
+        "password": "old_password",
+        "new_password": "new_password",
+        "function": "change_password",
+        "question": "answer"
+    }
+
++ Response 200 (application/json)
+    + Body
+        { 
+            "message": "Success: username changed" 
+        }
+
+### Danger: Delete account[DELETE]
+
++ Request (application/json)
+    {
+      "username": "user",
+      "password": "password",
+      "function": "delete_user",
+      "are_you_sure": "abcdefghijklmnopqrstuvwxyz"
+    }
+
++ Response 200 (application/json)
+    + Body
+        { 
+            "message": "Success: user deleted" 
+        }

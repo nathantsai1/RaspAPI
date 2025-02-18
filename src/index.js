@@ -185,6 +185,7 @@ app.put('/api/fitness_tracker', (req, res) => {
           console.log(3);
           res.json({ message: 'Success: password changed' });
           return true;
+
         } else if (string.function == "change_username") {
           // TODO: change username
           if (!string.new_username || !string.question) {
@@ -196,7 +197,7 @@ app.put('/api/fitness_tracker', (req, res) => {
             normal_db(result, res, true);
             return false;
           }
-          res.json({ message: 'Success: password changed' });
+          res.json({ message: 'Success: username changed' });
           return true;
       } else {
         res.status(400).json(general_error(407, 'invalid function', 'function parameter is not valid'));
