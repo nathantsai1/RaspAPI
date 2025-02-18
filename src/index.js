@@ -105,7 +105,7 @@ app.post('/api/fitness_tracker', (req, res) => {
       } else {
         let temp = 0;
         list.forEach(element => {
-          temp += element.distance;
+          temp += Numeric(element.distance);
         });
         res.json({message: "success", recorded_workouts_today: list, total_distance: `${temp} miles`});
         return true;
