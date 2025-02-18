@@ -1,14 +1,16 @@
-const general_error = {
-    "error": 10,
+const general_error = function (error, message1, detail) {
+	return {
+    "error": error,
 	"reasons": [
 	    {
 	        "language": "en",
-	        "message": "JSON Schema Validation filter failed"
+	        "message": message1
 	    }
 	],
 	"details": {
 	    "msgId": "Id-f5aab7304f6c754804f70000",
-	    "exception message": "JSON Schema Validation filter failed"
+	    "exception message": detail
 	}
-}
+}}
 
+module.exports = { general_error }

@@ -1,17 +1,49 @@
 {
+"note": {
+    "In the event of an error": "try using the backslash\" before every double quote in the json",
+    "To use the GET request, try using the following": "curl https://link.goes/here",
+    "To use the POST request, try using the following, replacing the single quotes with double": "curl -i -X POST -H 'Content-Type:application/json' -d '{json goes here}' https://link.goes/here",
+    "To use the PUT request, try using the following, replacing the single quotes with double": "curl -i -X PUT -H 'Content-Type:application/json' -d '{json goes here}' https://link.goes/here",
+    "To use the DELETE request, try using the following, replacing the single quotes with double": "curl -i -X DELETE -H 'Content-Type:application/json' -d '{json goes here}' https://link.goes/here"
+},
 "GET requests": {
     "/api/fitness_tracker": "a description given of what the fitness tracker is",
     "/api/fitness_tracker/help": "describing the different cURL commands available",
     "/api/fitness_tracker/errors": "a description of all the errors in a fitness tracker"
 },
 "POST requests": {
-    "/api/fitness_tracker - there are 4 ways to use this": {
-        "1) Add a workout. The following data must be provided, where x is the number of miles ran, and y is how much a user weighs, in lb.": {\"username\": \"user\", \"password\": \"password\", \"function\": \"add_run\", \"workout\": \"run\", \"distance\": "x"},
-        "2) Get the daily amount you have ran. The following data must be provided": {\"username\": \"user\", \"password\": \"password\", \"function\": \"get_runs\"},
-        "3) Set a daily goal. the following data must be provided, where x is the goal of the number of miles run": {\"username\": \"user\", \"password\": \"password\", \"function\": \"set_goal\", \"daily_goal\": \"x\"},
-        "4) The trend of a runner's milage. the following data must be provided": {\"username\": \"user\", \"password\": \"password\", \"function\": \"get_trend\"}
+    "/api/fitness_tracker - there are 6 ways to use this": {
+        "1) Add a workout. The following data must be provided, where x is the number of miles ran(a decimal number)": 
+            {"username": "user", "password": "password", "function": "add_run", "workout": "run", "distance": "x"},
+
+        "2) Get the daily amount you have ran. The following data must be provided": 
+            {"username": "user", "password": "password", "function": "get_today"},
+
+        "3) Set/update a daily goal. the following data must be provided, where x is the goal of the number of miles run(a positive integer)": 
+            {"username": "user", "password": "password", "function": "set_goal", "daily_goal": "x"},
+
+        "4) The past workouts of a runner. the following data must be provided": 
+            {"username": "user", "password": "password", "function": "get_all"},
+
+        "5) Add a new user. The following data must be provided, where the value for 'question' is a string which will help you create a new password if you forget it": 
+            {"username": "user", "password": "password", "function": "add_user", "question": "answer"},
+
+        "6) Find your goals. The following data must be provided": 
+            {"username": "user", "password": "password", "function": "find_goal"}
+
+    }
+},
+"PUT requests": {
+    "/api/fitness_tracker - there are 2 ways to use this": {
+
+        "1) Change a username. The following data must be provided, where the value of \"username\" must be your new username": 
+            {"username": "old_user", "new_username": "username", "password": "password", "function": "change_username", "question": "answer" },
+
+        "2) Change a password. The following data must be provided, where the value of 'password' must be the new password": 
+            {"username": "user", "password": "old_password", "new_password": "new_password", "function": "change_password", "question": "answer" }
     }
 },
 "DELETE requests": {
-    "/api/fitness_tracker/delete - delete an existing user from the database. The following data must be provided, where 'are_you_sure' must have the alphabet typed up": {\"username\": \"user\", \"password\": \"password\", \"are_you_sure\": \"abcdefghijklmnopqrstuvwxyz\"}
+    "/api/fitness_tracker - delete an existing user from the database. The following data must be provided, where 'are_you_sure' must have the alphabet typed up": 
+    {"username": "user", "password": "password", "function": "delete_user", "are_you_sure": "abcdefghijklmnopqrstuvwxyz"}
 }}

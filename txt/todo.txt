@@ -1,17 +1,15 @@
-{
-GET requests: {
-    "/api/fitness_tracker": "a description given of what the fitness tracker is",
-    "/api/fitness_tracker/help": - "describing the different cURL commands available",
-    "/api/fitness_tracker/errors": - "a description of all the errors in a fitness tracker",
-},
-POST requests: {
-    "/api/fitness_tracker - there are 4 ways to use this": {
-        "1)": "Add a workout. the data {username="user", password="password", function="add_run" workout="run", distance="x"} must be provided, where x is the number of miles run, and y is how much a user weighs, in lb.",
-        "2)": "Get the daily amount you have ran. the data {username="user", password="password", function="get_runs"} must be provided",
-        "3)": "Set a daily goal. the data {username="user", password="password", function="set_goal" daily_goal="x"} must be provided, where x is the goal of the number of miles run",
-        "4)": "The trend of a runner's milage. the data {username="user", password="password", function="get_trend"} must be provided",
+
+"PUT requests": {
+    "/api/fitness_tracker - there are 2 ways to use this": {
+
+        "1) Change a username. The following data must be provided, where the value of \"username\" must be your new username": 
+            {"username": "old_user", "new_username": "username", "password": "password", "function": "change_username", "question": "answer" },
+
+        "2) Change a password. The following data must be provided, where the value of 'password' must be the new password": 
+            {"username": "user", "password": "old_password", "new_password": "new_password", "function": "change_password", "question": "answer" }
     }
 },
-DELETE requests: {
-    "/api/fitness_tracker/delete": "delete an existing user from the database. The data {username="user", password="password", are_you_sure="abcdefghijklmnopqrstuvwxyz"} must be provided, where are_you_sure must have the alphabet typed up"
+"DELETE requests": {
+    "/api/fitness_tracker - delete an existing user from the database. The following data must be provided, where 'are_you_sure' must have the alphabet typed up": 
+    {"username": "user", "password": "password", "function": "delete_user", "are_you_sure": "abcdefghijklmnopqrstuvwxyz"}
 }}

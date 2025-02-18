@@ -1,8 +1,23 @@
 {
     "error lists": "a list of errors, sorted by their value rounded down to the nearest 100",
     "400 errors: argument isn't recognized": {
-        "404": "command isn't found"
+        "404": "basic argument isn't found - username, password, or function",
+        "405": "an argument is of the wrong length - pw must be greater than 8 characters, and username must be greater than 4 characters",
+        "406": "specified argument isn't found: workout&distance/are_you_sure",
+        "407": "arguement: 'function' does not have a valid value",
+        "408": "database already has user 'user'",
+        "409": "database doesn't have user 'user'",
+        "410": "database doesn't have data from today"
+    },
+    "500 errors: server-side error": {
+        "501": "general server-side error",
+        "502": "has not been implemented yet"
+    }, 
+    "600 errors: arguments do not match": {
+        "601": "passwords do not match",
+        "602": "usernames do not match",
+        "603": "deletion of user is not confirmed correctly",
+        "604": "argument 'distance' is not a number"
     }
-
 }
     
