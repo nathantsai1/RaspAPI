@@ -25,8 +25,12 @@ async function add_user(user, password, question) {
       // salt and hash pw
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
-      await sql`INSERT INTO public.users ("user", "question", "password") VALUES (${user.toString()}, ${question.toString()}, ${hashedPassword.toString()})`;
-      return true;
+      const salt_v2 = await bcrypt.genSalt();
+      // api key hashed
+      const api_key = require('crypto').randomBytes(12).toString('hex')
+      const hashedkey = await bcrypt.hash(api_key, salt_v2);
+      await sql`INSERT INTO public.users ("user", "question", "password", "api_key") VALUES (${user.toString()}, ${question.toString()}, ${hashedPassword.toString()}, ${hashedkey.toString()})`;
+      return api_key;
     }
     return false;
   } catch (error) {
@@ -36,10 +40,10 @@ async function add_user(user, password, question) {
 }
 
 // find the goals of a user
-async function find_goals(user, password) {
+async function find_goals(api_key) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password);
+    is_user = await login(api_key);
     if (is_user === 1 || is_user === 2) {
       return is_user;
     } else if (is_user === -1) {
@@ -53,10 +57,10 @@ async function find_goals(user, password) {
   }
 }
 
-async function set_goal(user, password, goal) {
+async function set_goal(api_key, goal) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password);
+    is_user = await login(api_key);
     if (is_user === 1 || is_user === 2) {
       return is_user;
     } else if (is_user === -1) {
@@ -75,15 +79,13 @@ async function set_goal(user, password, goal) {
 }
 
 // upload a workout to the db
-async function upload_workout(user, password, distance) {
+async function upload_workout(api_key, distance) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password);
+    is_user = await login(api_key);
     // is the user real?
-    if (is_user === 1) {
-      return 1;
-    } else if (is_user === 2) {
-      return 2;
+    if (is_user === 1 || is_user === 2) {
+      return is_user;
     } else if (is_user === -1) {
       return 3;
     }
@@ -96,18 +98,22 @@ async function upload_workout(user, password, distance) {
 }
 
 // delete a user from the db
-async function delete_info(user, password) {
+async function delete_info(api_key) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password);
+    is_user = await login(api_key);
     if (is_user === 1 || is_user === 2) {
       return is_user;
     } else if (is_user === -1) {
       return 3;
     }
-    
+    // delete from all DBs
     await sql`
-      DELETE FROM public.users WHERE "user" = ${user.toString()}`;
+      DELETE FROM public.users WHERE "id" = ${Number(is_user)}`;
+      await sql`
+      DELETE FROM public.distances WHERE "user" = ${Number(is_user)}`;
+      await sql`
+      DELETE FROM public.goals WHERE "user" = ${Number(is_user)}`;
     return true;
 
   } catch(err) {
@@ -117,10 +123,10 @@ async function delete_info(user, password) {
 }
 
 // get the workouts of today
-async function get_today(user, password) {
+async function get_today(api_key) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password);
+    is_user = await login(api_key);
     if (is_user === 1 || is_user === 2) {
       return is_user;
     } else if (is_user === -1) {
@@ -135,10 +141,10 @@ async function get_today(user, password) {
 }
 
 // change the pw of a user
-async function change_password(user, password, new_password, question) {
+async function change_password(api_key, new_password, question) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password);
+    is_user = await login(api_key);
     if (is_user === 1 || is_user === 2) {
       return is_user;
     } else if (is_user === -1) {
@@ -147,7 +153,7 @@ async function change_password(user, password, new_password, question) {
     // salt and hash pw
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(new_password, salt);
-    await sql`UPDATE public.users SET password = ${hashedPassword.toString()} WHERE "user" = ${user.toString()} AND "question" = ${question.toString()}`;
+    await sql`UPDATE public.users SET password = ${hashedPassword.toString()} WHERE "id" = ${is_user.toString()} AND "question" = ${question.toString()}`;
     return true;
   } catch (error) {
     console.log(error);
@@ -156,16 +162,16 @@ async function change_password(user, password, new_password, question) {
 }
 
 // change the username of a user
-async function change_username(user, new_username, password, question) {
+async function change_username(api_key, new_username, question) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password);
+    is_user = await login(api_key);
     if (is_user === 1 || is_user === 2) {
       return is_user;
     } else if (is_user === -1) {
       return 3;
     }
-    await sql`UPDATE public.users SET "user" = ${new_username.toString()} WHERE "user" = ${user.toString()} AND "question" = ${question.toString()}`;
+    await sql`UPDATE public.users SET "user" = ${new_username.toString()} WHERE "id" = ${is_user.toString()} AND "question" = ${question.toString()}`;
     return true;
   } catch (error) {
     console.log(error);
@@ -173,10 +179,10 @@ async function change_username(user, new_username, password, question) {
   }
 }
 
-async function get_all(user, password) {
+async function get_all(api_key) {
   try {
     // returns 1 if user doesn't exist, 2 if password is wrong,  3/4 error
-    is_user = await login(user, password); 
+    is_user = await login(api_key); 
     if (is_user === 1 || is_user === 2) {
       return is_user;
     } else if (is_user === -1) {
@@ -190,20 +196,24 @@ async function get_all(user, password) {
   }
 }
 
-async function login(user, password) {
+async function login(api_key) {
   try {
-    const result = await sql`SELECT * FROM public.users WHERE "user" = ${user.toString()} `;
+    const result = await sql`SELECT * FROM public.users`;
     if (result.length === 0) {
       // no user named 'user'
       return 1;
     }
-    const validPassword = await bcrypt.compare(password, result[0].password);
-    if (!validPassword) {
-      // incorrect password
-      return 2;
+    let is_user = false;
+    // if there is a user with the api_key "api_key", return true
+    for (let i = 0; i < result.length; i++) {
+      const validApiKey = await bcrypt.compare(api_key.toString(), result[i].api_key);
+      if (validApiKey) {
+        is_user = true;
+        return result[i].id;
+      }
     }
-    // is true user
-    return result[0].id;
+    // else return false
+    return 1;
   } catch (error) {
     console.log(error);
     return -1;

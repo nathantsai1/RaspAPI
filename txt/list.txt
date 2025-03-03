@@ -12,38 +12,26 @@
     "/api/fitness_tracker/errors": "a description of all the errors in a fitness tracker"
 },
 "POST requests": {
-    "/api/fitness_tracker - there are 6 ways to use this": {
-        "1) Add a workout. The following data must be provided, where x is the number of miles ran(a decimal number)": 
-            {"username": "user", "password": "password", "function": "add_run", "workout": "run", "distance": "x"},
-
-        "2) Get the daily amount you have ran. The following data must be provided": 
-            {"username": "user", "password": "password", "function": "get_today"},
-
-        "3) Set/update a daily goal. the following data must be provided, where x is the goal of the number of miles run(a positive integer)": 
-            {"username": "user", "password": "password", "function": "set_goal", "daily_goal": "x"},
-
-        "4) The past workouts of a runner. the following data must be provided": 
-            {"username": "user", "password": "password", "function": "get_all"},
-
-        "5) Add a new user. The following data must be provided, where the value for 'question' is a string which will help you create a new password if you forget it": 
-            {"username": "user", "password": "password", "function": "add_user", "question": "answer"},
-
-        "6) Find your goals. The following data must be provided": 
-            {"username": "user", "password": "password", "function": "find_goal"}
-
-    }
+    "/api/fitness_tracker/add_run : Add a workout. The following data must be provided, where x is the number of miles ran(a decimal number)": 
+            {"api_key": "api_key", "distance": "x"},
+    "/api/fitness_tracker/set_goal : Set/update a daily goal. the following data must be provided, where x is the goal of the number of miles run(a positive integer)": 
+            {"api_key": "api_key", "daily_goal": "x"},
+    "/api/fitness_tracker/add_user : Add a new user. The following data must be provided, where the value for 'question' is a string which will help you create a new password if you forget it": 
+            {"username": "user", "password": "password", "question": "answer"},
+    "/api/fitness_tracker/get_today : Get the daily amount you have ran. The following data must be provided": 
+            {"api_key": "api_key"},
+    "api/fitness_tracker/past_workouts : find the past workouts of a runner. the following data must be provided": 
+            {"api_key": "api_key"},
+    "api/fitness_tracker/find_goal : Find your goal. The following data must be provided": 
+            {"api_key": "api_key"}
 },
 "PUT requests": {
-    "/api/fitness_tracker - there are 2 ways to use this": {
-
-        "1) Change a username. The following data must be provided, where the value of \"username\" must be your new username": 
-            {"username": "old_user", "new_username": "username", "password": "password", "function": "change_username", "question": "answer" },
-
-        "2) Change a password. The following data must be provided, where the value of 'password' must be the new password": 
-            {"username": "user", "password": "old_password", "new_password": "new_password", "function": "change_password", "question": "answer" }
-    }
+    "/api/fitness_tracker/change_username : Change a username. The following data must be provided, where the value of \"username\" must be your new username":
+        {"api_key": "api_key", "new_username": "new_username", "question": "answer" },
+    "/api/fitness_tracker/change_password : Change a password. The following data must be provided, where the value of 'password' must be the new password": 
+        {"api_key": "api_key", "new_password": "new_password", "question": "answer"}
 },
 "DELETE requests": {
-    "/api/fitness_tracker - delete an existing user from the database. The following data must be provided, where 'are_you_sure' must have the alphabet typed up": 
-    {"username": "user", "password": "password", "function": "delete_user", "are_you_sure": "abcdefghijklmnopqrstuvwxyz"}
+    "/api/fitness_tracker/delete_account - delete an existing user from the database. The following data must be provided, where 'are_you_sure' must have the alphabet typed up": 
+    {"api_key": "api_key", "are_you_sure": "abcdefghijklmnopqrstuvwxyz"}
 }}
