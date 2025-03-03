@@ -9,9 +9,9 @@ const fs = require('fs');
 const path = require('path');
 var bodyParser = require('body-parser');
 
-const { general_error } = require('./errors.js');
-const { normal_post, normal_db } = require('./check.js');
-const { set_goal, add_user, find_goals, upload_workout, delete_info, get_today, change_password, change_username, get_all } = require('./DBwork.js');
+const { general_error } = require('./src/errors.js');
+const { normal_post, normal_db } = require('./src/check.js');
+const { set_goal, add_user, find_goals, upload_workout, delete_info, get_today, change_password, change_username, get_all } = require('./src/DBwork.js');
 
 let strings = '';
 exports.strings = strings;
