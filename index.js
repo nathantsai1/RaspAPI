@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({
 
 // TODO: home page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  res.sendFile(path.join(__dirname, './index.html'));
 });
 
 // get the introduction page
@@ -296,6 +296,7 @@ app.delete('/api/fitness_tracker/delete_account', (req, res) => {
 // internal server err to ward of hacker people
 app.use((err, req, res, next) => {
   if (err) {
+    console.error(err.stack);
     return res.sendStatus(500);
   }
   next();
